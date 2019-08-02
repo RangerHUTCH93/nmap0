@@ -1,0 +1,137 @@
+#!/bin/bash
+
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+clear
+echo 
+echo "This script covers (mainly) nmap functionality."
+echo
+echo This is an informational script, that simply prints text to the screen.
+echo
+echo
+echo    "1.) Port scanning (SYN scan, default 1000 ports)"
+echo    "2.) Port scanning (TCP SYN scan, default 1000 ports)"
+echo    "3.) Port scanning (TCP connect scan)"
+echo    "4.) XMAS scan"
+echo    "5.) ACK switch scan (find firewall rules)"
+echo    "6.) Active OS fingerprinting (nmap)"
+echo    "7.) Passive OS fingerprinting (p0f)"
+echo    "8.) Network mapping (zenmap)"
+echo    "9.) Banner grabbing (nmap)"
+echo    "10.) DNS lookup (Linux)"
+echo
+echo Press ctrl+c to exit
+echo
+
+read -n2 -p "Please select an option (format of 01, 02, etc.): " varUserInput
+
+echo
+
+case $varUserInput in
+    01*)
+        clear
+        echo
+        echo "Port scanning (SYN scan, default 1000 ports)"
+        echo
+        echo -e ${GREEN}Syntax${NC}: nmap "<IP address>"
+        echo
+        echo -e ${GREEN}Description${NC}: checks for open ports, using the default SYN scan.
+        echo
+        ;;
+    02*)
+        clear
+        echo
+        echo "Port scanning (TCP SYN Scan, default 1000 ports"
+        echo
+        echo -e ${GREEN}Syntax${NC}: nmap -sS "<IP address>"
+        echo
+        echo -e ${GREEN}Description${NC}: -sS TCP SYN port scan, a half-connect scan, doesnt complete the three-way handshake.
+        echo
+        ;;
+    03*)
+        clear
+        echo
+        echo "Port scanning (TCP connect)"
+        echo
+        echo -e ${GREEN}Syntax${NC}: nmap -sT "<IP address>"
+        echo
+        echo -e ${GREEN}Description${NC}: -sT TCP connect port scan "(default with root privileges)". Full connect scan.
+        echo
+        ;;
+    04*)
+        clear
+        echo
+        echo "XMAS scan"
+        echo
+        echo -e ${GREEN}Syntax${NC}: nmap -sX "<IP address>"
+        echo
+        echo -e ${GREEN}Description${NC}: This scan type wont work on Windows "(RFC 793)" and is also not commonly used in penetration tests. This is also a very noisy scan.
+        echo    "- The "-sX" switch sets the FIN, PSH, and URG flags, but does not set the SYN flag."
+        echo    "- A port will be marked as closed if it sends a RST packet."
+        echo    "- A port will be marked as open if no response is recieved."
+        echo    "- use the "-reason" option to see why a port is in a certain state."
+        echo
+        ;;
+    05*)
+        clear
+        echo
+        echo "ACK switch scan (find firewall rules)"
+        echo
+        echo -e ${GREEN}Syntax${NC}: nmap -sA -p 80 "<IP address>" 
+        echo
+        echo -e ${GREEN}Description${NC}: This scan never determines open ports. Its used to map out firewall rulsets, determining whether they are stateful or not and which ports are filtered.
+        echo    "- If the firewall for the remote host is turned on, the state should be shown as "filtered"."
+        echo
+        ;;
+    06*)
+        clear
+        echo
+        echo "Active OS fingerprinting (nmap)"
+        echo
+        echo -e ${GREEN}Syntax${NC}: nmap -sS -O "<IP address>"
+        echo
+        echo -e ${GREEN}Description${NC}: -sS = SYN scan, -O = enables OS detection
+        echo
+        ;;
+    07*)
+        clear
+        echo
+        echo "Passive OS fingerprinting (p0f)"
+        echo
+        echo -e ${GREEN}Syntax${NC}: p0f -p -i eth0
+        echo
+        echo -e ${GREEN}Description${NC}: -p = promiscuous mode, -i = interface to recieve traffic from.
+        echo "- This'll detect the OS of a remote machine you contact, whether passively or actively. p0f itself is passive and does not send any traffic."
+        echo
+        ;;
+    08*)
+        clear
+        echo
+        echo "Network mapping (zenmap)"
+        echo
+        echo -e ${GREEN}Description${NC}: Use the GUI interface to find the network map of the network youre scanning.
+        echo
+        ;;
+    09*)
+        clear
+        echo
+        echo "Banner grabbing (nmap)"
+        echo
+        echo -e ${GREEN}Syntax${NC}: nmap -sS -p 80 -A "<IP address>"
+        echo
+        echo -e ${GREEN}Description${NC}: -sS = SYN scan, -p = port number, -A = aggressive mode.
+        echo
+        ;;
+    10*)
+        clear
+        echo
+        echo "DNS lookup (Linux)"
+        echo
+        echo -e ${GREEN}Syntax${NC}: dig axfr "<host> <IP address>"
+        echo
+        echo -e ${GREEN}Description${NC}: The axfr option is used to provide a complete listing of domain records.
+        echo "- not all DNS servers are suspectible to this attack."
+        echo
+        ;;
+esac
